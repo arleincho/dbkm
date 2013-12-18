@@ -1,2 +1,0 @@
-Validaciones del lado Cliente
-====================

@@ -1,2 +1,0 @@
-Botones en los formularios
-====================

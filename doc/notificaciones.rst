@@ -1,2 +1,0 @@
-Notificaciones del sistema
-====================

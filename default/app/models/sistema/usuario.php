@@ -304,14 +304,14 @@ class Usuario extends ActiveRecord {
         return ($rs) ? $obj : FALSE;
     }
     
-    /**
-     * Método para verificar si existe un campo registrado
-     */
-    protected function _getRegisteredField($field, $value, $id=NULL) {                
-        $conditions = "$field = '$value'";
-        $conditions.= (!empty($id)) ? " AND id != $id" : '';
-        return $this->count("conditions: $conditions");
-    }
+    // /**
+    //  * Método para verificar si existe un campo registrado
+    //  */
+    // protected function _getRegisteredField($field, $value, $id=NULL) {                
+    //     $conditions = "$field = '$value'";
+    //     $conditions.= (!empty($id)) ? " AND id != $id" : '';
+    //     return $this->count("conditions: $conditions");
+    // }
     
     /**
      * Callback que se ejecuta antes de guardar/modificar

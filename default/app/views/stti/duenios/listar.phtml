@@ -1,0 +1,66 @@
+<?php View::notify(); ?>
+
+<script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            order_attr: '<?php echo (APP_AJAX) ? 'class="dw-ajax dw-spinner"' : ''; ?>',
+            order_action: $.KumbiaPHP.publicPath+"stti/duenios/listar/"
+        });
+    });
+</script>
+
+<div class="container-fluid dw-shell-view">
+
+    <?php View::process($page_module, $page_title, $set_title); ?>
+
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            <?php echo DwHtml::button("stti/duenios/agregar/", 'agregar', array('class'=>'btn-success'), 'check', APP_AJAX); ?>
+        </div>
+    </div>
+
+    <div class="dw-overflow">
+
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>NUM</th>
+                    <th class="col-collapse" data-search="perfil">RAZON SOCIAL</th>
+                    <th class="col-collapse" data-search="plantilla">IDENTIFICACION</th>
+                    <th class="col-collapse" data-search="usuarios">PUNTOS</th>
+                    <th class="col-collapse" data-search="estado">APROBADO</th>
+                    <th class="btn-actions no-responsive">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($duenios->items as $duenio): ?>
+                    <?php $key_show = DwSecurity::getKey($duenio->id, 'show_duenio'); ?>
+                    <?php $key_upd = DwSecurity::getKey($duenio->id, 'upd_duenio'); ?>
+                    <?php $key_inac = DwSecurity::getKey($duenio->id, 'rechazar_duenio'); ?>
+                    <?php $key_reac = DwSecurity::getKey($duenio->id, 'aprobar_duenio'); ?>
+                    <tr>
+                        <td><?php echo $duenios->counter; ?></td>
+                        <td><?php echo $duenio->razon_social; ?></td>
+                        <td><?php echo $duenio->identificacion; ?></td>
+                        <td><?php echo $duenio->puntos; ?></td>
+                        <td><?php echo ($duenio->aprobado == Duenio::APROBADO) ? '<span class="label label-success">Aprobado</span>' : '<span class="label label-important">Rechazado</span>'; ; ?></td>
+                        <td>
+                            <?php echo DwHtml::buttonTable('Ver Dueño', "stti/duenios/ver/$key_show/", null, 'info', 'search'); ?>
+                            <?php echo DwHtml::buttonTable('Modificar Dueño', "stti/duenios/editar/$key_upd/", null, 'info', 'edit'); ?>
+                            <?php if($duenio->aprobado == Duenio::APROBADO) { ?>
+                                <?php echo DwHtml::buttonTable('Rechazar Dueño', "stti/duenios/estado/rechazar/$key_inac/", null, 'success', 'flag'); ?>
+                            <?php } else { ?>
+                                <?php echo DwHtml::buttonTable('Aprobar Dueño', "stti/duenios/estado/aprobar/$key_reac/", null, 'danger', 'flag'); ?>
+                            <?php } ?>
+                        </td>
+                    </tr>
+                    <?php $duenios->counter++; ?>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+    </div>
+
+    <?php View::partial('paginators/default', false, array('page'=>$duenios, 'url'=>"stti/duenios/listar/$order/")); ?>
+
+</div>

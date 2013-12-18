@@ -118,4 +118,13 @@ class ActiveRecord extends KumbiaActiveRecord  {
         $config = $database[$source]; //Extraigo la conexion de la base de datos de la aplicacion        
         return $config;
     }
+
+    /**
+     * Método para verificar si existe un campo registrado
+     */
+    protected function _getRegisteredField($field, $value, $id=NULL) {                
+        $conditions = "$field = '$value'";
+        $conditions.= (!empty($id)) ? " AND id != $id" : '';
+        return $this->count("conditions: $conditions");
+    }
 }
