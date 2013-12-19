@@ -10,7 +10,7 @@
  * @copyright   Copyright (c) 2013 Dailyscript Team (http://www.dailyscript.com.co)
  */
 
-Load::models('stti/duenio', 'stti/punto');
+Load::models('stti/duenio', 'stti/punto', 'stti/transacciones');
 
 class PuntosController extends BackendController {
     
@@ -64,10 +64,13 @@ class PuntosController extends BackendController {
         }        
         
         $punto = new Punto();
-        if(!$duenio->getInformacionPunto($id)) {
+        if(!$punto->getInformacionPunto($id)) {
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('listar');
         }
+
+        $transacciones = new Transacciones();
+        $this->transacciones = $transacciones->getTransaccionesPorPuntos($punto->id, $order, $page);
 
         $this->punto = $punto;
         $this->order = $order;

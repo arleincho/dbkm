@@ -10,7 +10,7 @@
         if (bValid) { login.removeClass('error'); }
         bValid = bValid && DwCheckLength(tips, pass,"La contraseña", 5);
         if (bValid) { pass.removeClass('error'); }
-        bValid = bValid && DwCheckRegexp(tips, login,/^([A-ZÑ0-9])+$/i, "El usuario debe tener caracteres alfanuméricos.");
+        bValid = bValid && DwCheckRegexp(tips, login,/^([A-ZÑ0-9\_])+$/i, "El usuario debe tener caracteres alfanuméricos.");
         if (bValid) { login.removeClass('error'); }
         bValid = bValid && DwCheckRegexp(tips, pass,/^([A-ZÑ0-9\.\-\#\?\_])+$/i,"La clave debe tener caracteres [A-Z]-[0-9]-[#?.-]");
         if (bValid) { pass.removeClass('error'); }

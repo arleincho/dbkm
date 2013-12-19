@@ -6,28 +6,28 @@
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
                 <fieldset class="fieldset">
-                    <legend>Informaci&oacute;n Personal</legend>
+                    <legend><small>Informaci&oacute;n Personal</small></legend>
                     <div class='row-fluid'>
                         <div class="span4">
-                            <?php echo DwForm::text('duenio.razon_social', NULL, NULL, 'Razon Social'); ?>
+                            <?php echo DwForm::text('duenio.razon_social', array('class' => 'input-required mask-alphanum show-error'), NULL, 'Razon Social'); ?>
                         </div>
                         <div class="span4">
-                            <?php echo DwForm::text('duenio.identificacion', NULL, NULL, 'Identificacin'); ?>
+                            <?php echo DwForm::text('duenio.identificacion', array('class' => 'input-required mask-alphanum show-error'), NULL, 'Identificacin'); ?>
                         </div>
                     </div>
                 </fieldset>
 
                 <fieldset class="fieldset">
-                    <legend>Informaci&oacute;n Bancaria</legend>
+                    <legend><small>Informaci&oacute;n Bancaria</small></legend>
                     <div class='row-fluid'>
                         <div class="span4">
-                            <?php echo DwForm::dbSelect('duenio.banco_id', array('nombre'), array('stti/banco', 'getListadoBancos'), array('todas'=>'Todos'), NULL, NULL, 'Banco'); ?>
+                            <?php echo DwForm::dbSelect('duenio.banco_id', array('nombre'), array('stti/banco', 'getListadoBancos'), array(''=>'Seleccione'), array('class' => 'input-required mask-pint show-error'), NULL, 'Banco'); ?>
                         </div>
                         <div class="span4">
-                            <?php echo DwForm::text('duenio.tipo_cuenta', NULL, NULL, 'Tipo de Cuenta'); ?>
+                            <?php echo DwForm::dbSelect('duenio.tipo_cuenta_id', array('tipo_cuenta'), array('stti/tipo_cuenta', 'getListadoTipoCuenta'), array(''=>'Seleccione'), array('class' => 'input-required mask-pint show-error'), NULL, 'Tipo de Cuenta'); ?>
                         </div>
                         <div class="span4">
-                            <?php echo DwForm::number('duenio.numero_cuenta', NULL, NULL, 'Numero de Cuenta del Banco'); ?>
+                            <?php echo DwForm::number('duenio.numero_cuenta', array('class' => 'input-required mask-int show-error'), NULL, 'Numero de Cuenta del Banco'); ?>
                         </div>
                     </div>
                 </fieldset>

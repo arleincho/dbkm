@@ -7,21 +7,21 @@
             <div class="tab-pane active" id="tab1">
                 <div class='row-fluid'>
                     <div class="span4">
-                        <?php echo DwForm::dbSelect('punto.duenio_id', array('razon_social'), array('stti/duenio', 'getListadoDuenios'), array('todas'=>'Todos'), NULL, NULL, 'Due&ntilde;o del Punto'); ?>
+                        <?php echo DwForm::dbSelect('punto.duenio_id', array('razon_social'), array('stti/duenio', 'getListadoDuenios', Duenio::APROBADO), array(''=>'Seleccione'), array('class' => 'input-required mask-int show-error'), NULL, 'Due&ntilde;o del Punto'); ?>
                     </div>
                     <div class="span4">
-                        <?php echo DwForm::text('punto.punto', NULL, NULL, 'Nombre del Punto'); ?>
+                        <?php echo DwForm::text('punto.punto', array('class' => 'input-required mask-alphanum show-error'), NULL, 'Nombre del Punto'); ?>
                     </div>
                     <div class="span4">
-                        <?php echo DwForm::dbSelect('punto.tipo_punto_id', array('tipo_punto'), array('stti/tipo_punto', 'getListadoTipoPuntos'), array('todas'=>'Todos'), NULL, NULL, 'Tipo Punto'); ?>
+                        <?php echo DwForm::dbSelect('punto.tipo_punto_id', array('tipo_punto'), array('stti/tipo_punto', 'getListadoTipoPuntos'), array(''=>'Seleccione'), array('class' => 'input-required mask-int show-error'), NULL, 'Tipo Punto'); ?>
                     </div>
                 </div>
                 <div class='row-fluid'>
                     <div class="span4">
-                        <?php echo DwForm::dbSelect('punto.ciudad_id', array('ciudad'), array('params/ciudad', 'getListadoCiudad'), array('todas'=>'Todos'), NULL, NULL, 'Ciudad'); ?>
+                        <?php echo DwForm::dbSelect('punto.ciudad_id', array('ciudad'), array('params/ciudad', 'getListadoCiudad'), array(''=>'Seleccione'), array('class' => 'input-required mask-int show-error'), NULL, 'Ciudad'); ?>
                     </div>
                     <div class="span4">
-                        <?php echo DwForm::text('punto.direccion', NULL, NULL, 'Direcci&oacute;n'); ?>
+                        <?php echo DwForm::text('punto.direccion', array('class' => 'input-required mask-alphanum show-error'), NULL, 'Direcci&oacute;n'); ?>
                     </div>
                 </div>    
                 <div class="row-fluid">

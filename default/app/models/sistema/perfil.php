@@ -18,6 +18,11 @@ class Perfil extends ActiveRecord {
      */
     const SUPER_USUARIO = 1;
     
+
+    /**
+     * Constante para definir el perfil de Admin
+     */
+    const ADMIN = 3;
     /**
      * Constante para definir un perfil como activo
      */

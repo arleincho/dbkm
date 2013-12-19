@@ -67,7 +67,7 @@ class DueniosController extends BackendController {
         if(!$duenio->getInformacionDuenio($id)) {
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('listar');
-        }        
+        }
         
         $puntos = new Punto();
         $this->puntos = $puntos->getPuntosPorDuenio($duenio->id, $order, $page);
@@ -81,7 +81,7 @@ class DueniosController extends BackendController {
     /**
      * Método para editar
      */
-    public function editar($key) {        
+    public function editar($key) {
         if(!$id = DwSecurity::isValidKey($key, 'upd_duenio', 'int')) {
             return DwRedirect::toAction('listar');
         }
@@ -95,7 +95,7 @@ class DueniosController extends BackendController {
         if(Input::hasPost('duenio')) {
             if(DwSecurity::isValidKey(Input::post('duenio_id_key'), 'form_key')) {
                 ActiveRecord::beginTrans();
-                if(Usuario::setDuenio('update', Input::post('duenio'), array('id'=>$duenio->id))) {
+                if(Duenio::setDuenio('update', Input::post('duenio'), array('id'=>$duenio->id))) {
                     ActiveRecord::commitTrans();
                     DwMessage::valid('El Dueño se ha actualizado correctamente.');
                     return DwRedirect::toAction('listar');
@@ -111,25 +111,28 @@ class DueniosController extends BackendController {
      * Método para aprobar/rechazar
      */
     public function estado($tipo, $key) {
-        if(!$id = DwSecurity::isValidKey($key, $tipo.'_duenio', 'int')) {
-            return DwRedirect::toAction('listar');
-        }
-        
-        $duenio = new Duenio();
-        if(!$duenio->find_first($id)) {
-            DwMessage::get('id_no_found');            
-        } else {
-            if($tipo=='rechazar' && $duenio->aprobado == Duenio::RECHAZADO) {
-                DwMessage::info('El Dueño del punto ya se encuentra rechazado');
-            } else if($tipo=='aprobar' && $duenio->aprobado == Duenio::APROBADO) {
-                DwMessage::info('El Dueño del punto ya se encuentra aprobado');
+        if(Session::get('perfil_id') == Perfil::SUPER_USUARIO || Session::get('perfil_id') == Perfil::ADMIN){
+            if(!$id = DwSecurity::isValidKey($key, $tipo.'_duenio', 'int')) {
+                return DwRedirect::toAction('listar');
+            }
+            $duenio = new Duenio();
+            if(!$duenio->find_first($id)) {
+                DwMessage::get('id_no_found');            
             } else {
-                $estado = ($tipo=='rechazar') ? Duenio::RECHAZADO : Duenio::APROBADO;
-                if(Duenio::setDuenio('update', $duenio->to_array(), array('id'=>$id, 'aprobado' => $estado))){
-                    ($estado==Duenio::APROBADO) ? DwMessage::valid('El Dueño del Punto se ha aprobado correctamente!') : DwMessage::valid('El Deuño del Punto se ha rechazado correctamente!');
+                if($tipo=='rechazar' && $duenio->aprobado == Duenio::RECHAZADO) {
+                    DwMessage::info('El Dueño del punto ya se encuentra rechazado');
+                } else if($tipo=='aprobar' && $duenio->aprobado == Duenio::APROBADO) {
+                    DwMessage::info('El Dueño del punto ya se encuentra aprobado');
+                } else {
+                    $estado = ($tipo=='rechazar') ? Duenio::RECHAZADO : Duenio::APROBADO;
+                    if(Duenio::setDuenio('update', $duenio->to_array(), array('id'=>$id, 'aprobado' => $estado))){
+                        ($estado==Duenio::APROBADO) ? DwMessage::valid('El Dueño del Punto se ha aprobado correctamente!') : DwMessage::valid('El Deuño del Punto se ha rechazado correctamente!');
+                    }
                 }
             }
+            return DwRedirect::toAction('listar');
+        }else{
+            DwMessage::valid('Ocurrio un error al realizar la acción');
         }
-        return DwRedirect::toAction('listar');
     }
 }

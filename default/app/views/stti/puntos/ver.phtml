@@ -1,10 +1,9 @@
 <?php View::notify(); ?>
-
 <script type="text/javascript">
     $(function() {
         $('table').dwGrid({
             order_attr: '<?php echo (APP_AJAX) ? 'class="dw-ajax dw-spinner"' : ''; ?>',
-            order_action: $.KumbiaPHP.publicPath+"sistema/duenios/ver/<?php echo $key; ?>/"
+            order_action: $.KumbiaPHP.publicPath+"stti/puntos/ver/<?php echo $key; ?>/"
         });
     });
 </script>
@@ -18,84 +17,65 @@
         <?php } else { ?>
         <ul class="nav nav-pills nav-stacked">
         <?php } ?>
-            <li class="active"><a href="#tab1" data-toggle="tab">Información del Dueño</a></li>
-            <li><a href="#tab2" data-toggle="tab">Puntos asignados</a></li>
+            <li class="active"><a href="#tab1" data-toggle="tab">Información del Punto</a></li>
+            <li><a href="#tab2" data-toggle="tab">Transacciones asignados</a></li>
         </ul>
         <div class="tab-content">
-
             <div class="tab-pane active" id="tab1">
-
-
                 <?php echo DwForm::open(); ?>
-                    <fieldset class="fieldset">
-                        <legend>Informaci&oacute;n Personal</legend>
-                        <div class="row-fluid">
-                            <div class="span4">
-                                <?php echo DwForm::text('duenio.razon_social', NULL, $duenio->razon_social, 'Razon Social'); ?>
-                            </div>
-                            <div class="span4">
-                                <?php echo DwForm::text('duenio.identificacion', NULL, $duenio->identificacion, 'Identificacion'); ?>
-                            </div>
-                            <div class="span4">
-                                <?php echo DwForm::text('duenio.aprobado', NULL, ($duenio->aprobado == Duenio::APROBADO) ? 'APROBADO' : 'RECHAZADO', 'Estado'); ?>
-                            </div>
+                    <div class="row-fluid">
+                        <div class="span4">
+                            <?php echo DwForm::oneSelect('punto.duenio', $punto->duenio, array('class'=>'readonly'), 'Dueño del Punto'); ?>
                         </div>
-                    </fieldset>
-
-                    <fieldset class="fieldset">
-                        <legend>Informaci&oacute;n Bancaria</legend>
-                        <div class='row-fluid'>
-                            <div class="span4">
-                                <?php echo DwForm::oneSelect('duenio.banco', $duenio->banco, array('class'=>'input-xlarge readonly'), 'Banco'); ?>
-                            </div>
-                            <div class="span4">
-                                <?php echo DwForm::text('duenio.tipo_cuenta', NULL, $duenio->tipo_cuenta, 'Tipo de Cuenta'); ?>
-                            </div>
-                            <div class="span4">
-                                <?php echo DwForm::number('duenio.numero_cuenta', NULL, $duenio->numero_cuenta, 'Numero de Cuenta del Banco'); ?>
-                            </div>
+                        <div class="span4">
+                            <?php echo DwForm::text('punto.punto', array('class' => 'readonly'), $punto->punto, 'Nombre del Punto'); ?>
                         </div>
-                    </fieldset>
+                        <div class="span4">
+                            <?php echo DwForm::oneSelect('punto.tipo_punto', $punto->tipo_punto, array('class'=>'readonly'), 'Tipo de Punto'); ?>
+                        </div>
+                    </div>
+                    <div class='row-fluid'>
+                        <div class="span4">
+                            <?php echo DwForm::oneSelect('punto.ciudad', $punto->ciudad, array('class'=>'readonly'), 'Ciudad'); ?>
+                        </div>
+                        <div class="span4">
+                            <?php echo DwForm::text('punto.direccion', array('class'=>'readonly'), $punto->direccion, 'Dirección'); ?>
+                        </div>
+                    </div>
                 <?php echo DwForm::close(); ?>
-
             </div>
 
             <div class="tab-pane" id="tab2">
-
-                <?php View::process('Información de usuarios', NULL, FALSE); ?>
 
                 <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
                     <thead>
                         <tr>
                             <th>NUM</th>
-                            <th class="col-collapse" data-search="usuario">PUNTO</th>
-                            <th class="col-collapse" data-search="nombre">TIPO PUNTO</th>
-                            <th class="col-collapse" data-search="apellido">CIUDAD</th>
-                            <th class="col-collapse" data-search="apellido">DIRECCION</th>
+                            <th class="col-collapse" data-search="usuario">VALOR</th>
+                            <th class="col-collapse" data-search="nombre">ESTADO</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($puntos->items as $punto): ?>
+                        <?php setlocale(LC_MONETARY, 'es_CO');?>
+                        <?php foreach($transacciones->items as $transaccion): ?>
                             <tr>
-                                <td><?php echo $puntos->counter; ?></td>
-                                <td><?php echo $punto->punto; ?></td>
-                                <td><?php echo $punto->tipo_punto; ?></td>
-                                <td><?php echo $punto->ciudad; ?></td>
-                                <td><?php echo $punto->direccion; ?></td>
+                                <td><?php echo $transacciones->counter; ?></td>
+                                <td>$<?php echo number_format($transaccion->valor, 0, ',', '.'); ?></td>
+                                <td><?php echo ($transaccion->estado == Transacciones::PAGADA) ? '<span class="label label-success">Pagada</span>' : '<span class="label label-important">Pendiente</span>'; ; ?></td>
                             </tr>
-                            <?php $puntos->counter++; ?>
+                            <?php $transacciones->counter++; ?>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
 
-                <?php View::partial('paginators/default', false, array('page'=>$puntos, 'url'=>"stti/duenios/ver/$key/$order/")); ?>
+                <?php View::partial('paginators/default', false, array('page'=>$transacciones, 'url'=>"stti/puntos/ver/$key/$order/")); ?>
 
             </div>
         </div>
 
     <div class="row-fluid">
         <div class="form-actions">
-            <?php echo DwButton::back('stti/duenios/listar/'); ?>
+            <?php echo DwButton::back('stti/puntos/listar/'); ?>
         </div>
     </div>
 

@@ -32,8 +32,8 @@ class Punto extends ActiveRecord {
      * @return type
      */
     public function getListadoPuntos($estado='todos', $order='', $page=0) {                   
-        $columns = 'punto.*, COUNT(transacciones.id) AS transacciones, duenio.razon_social, tipo_punto.tipo_punto';        
-        $join = 'INNER JOIN duenio ON duenio.id = punto.duenio_id ';
+        $columns = 'punto.*, COUNT(transacciones.id) AS transacciones, sum(transacciones.valor) AS valor_transacciones, duenio.razon_social, tipo_punto.tipo_punto';        
+        $join = 'INNER JOIN duenio ON duenio.id = punto.duenio_id AND duenio.aprobado = ' . Duenio::APROBADO . ' ';
         $join .= 'INNER JOIN tipo_punto ON tipo_punto.id = punto.tipo_punto_id ';
         $join .= 'LEFT JOIN transacciones ON transacciones.punto_id = punto.id ';
         $conditions = 'punto.id IS NOT NULL';     
@@ -82,13 +82,15 @@ class Punto extends ActiveRecord {
      * Método para obtener la información de un dueño
      * @return type
      */
-    public function getInformacionPunto($duenio) {
-        $usuario = Filter::get($punto, 'int');
-        if(!$duenio) {
+    public function getInformacionPunto($punto) {
+        $punto = Filter::get($punto, 'int');
+        if(!$punto) {
             return NULL;
         }
-        $columnas = 'punto.*, duenio.razon_social';
+        $columnas = 'punto.*, duenio.razon_social as duenio, tipo_punto.tipo_punto, ciudad.ciudad';
         $join = 'INNER JOIN duenio ON duenio.id = punto.duenio_id ';
+        $join .= 'INNER JOIN tipo_punto ON tipo_punto.id = punto.tipo_punto_id ';
+        $join .= 'INNER JOIN ciudad ON ciudad.id = punto.ciudad_id ';
         $condicion = "punto.id = $punto";
         return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
     } 

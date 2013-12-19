@@ -43,11 +43,13 @@
                         <td>
                             <?php echo DwHtml::buttonTable('Ver Dueño', "stti/duenios/ver/$key_show/", null, 'info', 'search'); ?>
                             <?php echo DwHtml::buttonTable('Modificar Dueño', "stti/duenios/editar/$key_upd/", null, 'info', 'edit'); ?>
-                            <?php if($duenio->aprobado == Duenio::APROBADO) { ?>
-                                <?php echo DwHtml::buttonTable('Rechazar Dueño', "stti/duenios/estado/rechazar/$key_inac/", null, 'success', 'flag'); ?>
-                            <?php } else { ?>
-                                <?php echo DwHtml::buttonTable('Aprobar Dueño', "stti/duenios/estado/aprobar/$key_reac/", null, 'danger', 'flag'); ?>
-                            <?php } ?>
+                            <?php if(Session::get('perfil_id') == Perfil::SUPER_USUARIO || Session::get('perfil_id') == Perfil::ADMIN):?>
+                                <?php if($duenio->aprobado == Duenio::APROBADO) { ?>
+                                    <?php echo DwHtml::buttonTable('Rechazar Dueño', "stti/duenios/estado/rechazar/$key_inac/", null, 'success', 'flag'); ?>
+                                <?php } else { ?>
+                                    <?php echo DwHtml::buttonTable('Aprobar Dueño', "stti/duenios/estado/aprobar/$key_reac/", null, 'danger', 'flag'); ?>
+                                <?php } ?>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <?php $duenios->counter++; ?>

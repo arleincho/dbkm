@@ -1,10 +1,9 @@
 <?php View::notify(); ?>
-
 <script type="text/javascript">
     $(function() {
         $('table').dwGrid({
             order_attr: '<?php echo (APP_AJAX) ? 'class="dw-ajax dw-spinner"' : ''; ?>',
-            order_action: $.KumbiaPHP.publicPath+"sistema/duenios/ver/<?php echo $key; ?>/"
+            order_action: $.KumbiaPHP.publicPath+"stti/duenios/ver/<?php echo $key; ?>/"
         });
     });
 </script>
@@ -24,45 +23,40 @@
         <div class="tab-content">
 
             <div class="tab-pane active" id="tab1">
-
-
                 <?php echo DwForm::open(); ?>
                     <fieldset class="fieldset">
-                        <legend>Informaci&oacute;n Personal</legend>
+                        <legend><small>Informaci&oacute;n Personal</small></legend>
                         <div class="row-fluid">
                             <div class="span4">
-                                <?php echo DwForm::text('duenio.razon_social', NULL, $duenio->razon_social, 'Razon Social'); ?>
+                                <?php echo DwForm::text('duenio.razon_social', array('class' => 'readonly'), $duenio->razon_social, 'Razon Social'); ?>
                             </div>
                             <div class="span4">
-                                <?php echo DwForm::text('duenio.identificacion', NULL, $duenio->identificacion, 'Identificacion'); ?>
+                                <?php echo DwForm::text('duenio.identificacion', array('class' => 'readonly'), $duenio->identificacion, 'Identificacion'); ?>
                             </div>
                             <div class="span4">
-                                <?php echo DwForm::text('duenio.aprobado', NULL, ($duenio->aprobado == Duenio::APROBADO) ? 'APROBADO' : 'RECHAZADO', 'Estado'); ?>
+                                <?php echo DwForm::text('duenio.aprobado', array('class' => 'readonly'), ($duenio->aprobado == Duenio::APROBADO) ? 'APROBADO' : 'RECHAZADO', 'Estado'); ?>
                             </div>
                         </div>
                     </fieldset>
 
                     <fieldset class="fieldset">
-                        <legend>Informaci&oacute;n Bancaria</legend>
+                        <legend><small>Informaci&oacute;n Bancaria</small></legend>
                         <div class='row-fluid'>
                             <div class="span4">
-                                <?php echo DwForm::oneSelect('duenio.banco', $duenio->banco, array('class'=>'input-xlarge readonly'), 'Banco'); ?>
+                                <?php echo DwForm::oneSelect('duenio.banco', $duenio->banco, array('class'=>'readonly'), 'Banco'); ?>
                             </div>
                             <div class="span4">
-                                <?php echo DwForm::text('duenio.tipo_cuenta', NULL, $duenio->tipo_cuenta, 'Tipo de Cuenta'); ?>
+                                <?php echo DwForm::oneSelect('duenio.tipo_cuenta', $duenio->tipo_cuenta, array('class'=>'readonly'), 'Tipo de Cuenta'); ?>
                             </div>
                             <div class="span4">
-                                <?php echo DwForm::number('duenio.numero_cuenta', NULL, $duenio->numero_cuenta, 'Numero de Cuenta del Banco'); ?>
+                                <?php echo DwForm::number('duenio.numero_cuenta', array('class' => 'readonly'), $duenio->numero_cuenta, 'Numero de Cuenta del Banco'); ?>
                             </div>
                         </div>
                     </fieldset>
                 <?php echo DwForm::close(); ?>
-
             </div>
 
             <div class="tab-pane" id="tab2">
-
-                <?php View::process('Información de usuarios', NULL, FALSE); ?>
 
                 <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
                     <thead>

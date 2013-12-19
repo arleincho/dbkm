@@ -3,39 +3,33 @@
 <div class="container-fluid dw-shell-view">
     <?php View::process($page_module, $page_title, $set_title); ?>
     <?php echo DwForm::open('', 'post', array('id'=>'form', 'class'=>'dw-validate')); ?>
+        <?php echo DwForm::hiddenKey('punto.id', $punto->id)?>
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
-                <fieldset class="fieldset">
-                    <legend>Informaci&oacute;n Personal</legend>
-                    <div class='row-fluid'>
-                        <div class="span4">
-                            <?php echo DwForm::text('duenio.razon_social', NULL, $duenio->razon_social, 'Razon Social'); ?>
-                        </div>
-                        <div class="span4">
-                            <?php echo DwForm::text('duenio.identificacion', NULL, $duenio->identificacion, 'Identificacin'); ?>
-                        </div>
+                <div class='row-fluid'>
+                    <div class="span4">
+                        <?php echo DwForm::dbSelect('punto.duenio_id', array('razon_social'), array('stti/duenio', 'getListadoDuenios', Duenio::APROBADO), array(''=>'Seleccione'), array('class' => 'input-required mask-int show-error'), $punto->duenio_id, 'Due&ntilde;o del Punto'); ?>
                     </div>
-                </fieldset>
-
-                <fieldset class="fieldset">
-                    <legend>Informaci&oacute;n Bancaria</legend>
-                    <div class='row-fluid'>
-                        <div class="span4">
-                            <?php echo DwForm::dbSelect('duenio.banco_id', array('nombre'), array('stti/banco', 'getListadoBancos'), array('todas'=>'Todos'), NULL, $duenio->banco_id, 'Banco'); ?>
-                        </div>
-                        <div class="span4">
-                            <?php echo DwForm::text('duenio.tipo_cuenta', NULL, $duenio->tipo_cuenta, 'Tipo de Cuenta'); ?>
-                        </div>
-                        <div class="span4">
-                            <?php echo DwForm::number('duenio.numero_cuenta', NULL, $duenio->numero_cuenta, 'Numero de Cuenta del Banco'); ?>
-                        </div>
+                    <div class="span4">
+                        <?php echo DwForm::text('punto.punto', array('class' => 'input-required mask-alphanum show-error'), $punto->punto, 'Nombre del Punto'); ?>
                     </div>
-                </fieldset>
+                    <div class="span4">
+                        <?php echo DwForm::dbSelect('punto.tipo_punto_id', array('tipo_punto'), array('stti/tipo_punto', 'getListadoTipoPuntos'), array(''=>'Seleccione'), array('class' => 'input-required mask-int show-error'), $punto->tipo_punto_id, 'Tipo Punto'); ?>
+                    </div>
+                </div>
+                <div class='row-fluid'>
+                    <div class="span4">
+                        <?php echo DwForm::dbSelect('punto.ciudad_id', array('ciudad'), array('params/ciudad', 'getListadoCiudad'), array(''=>'Seleccione'), array('class' => 'input-required mask-int show-error'), $punto->ciudad_id, 'Ciudad'); ?>
+                    </div>
+                    <div class="span4">
+                        <?php echo DwForm::text('punto.direccion', array('class' => 'input-required mask-text show-error'), $punto->direccion, 'Direcci&oacute;n'); ?>
+                    </div>
+                </div>    
                 <div class="row-fluid">
                     <div class="form-actions">
-                        <?php echo DwButton::save('Guardar usuario'); ?>
+                        <?php echo DwButton::save('Guardar Punto'); ?>
                         <?php echo DwButton::reset('form'); ?>
-                        <?php echo DwButton::cancel('stti/duenios/listar/'); ?>
+                        <?php echo DwButton::cancel('stti/puntos/listar/'); ?>
                     </div>
                 </div>
             </div>

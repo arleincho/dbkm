@@ -29,6 +29,7 @@ class Duenio extends ActiveRecord {
     protected function initialize() {
         $this->has_many('punto');
         $this->belongs_to('banco');
+        $this->belongs_to('tipo_cuenta');
     }
     
     /**
@@ -38,10 +39,13 @@ class Duenio extends ActiveRecord {
      * @param type $page
      * @return type
      */
-    public function getListadoDuenios($estado='todos', $order='', $page=0) {                   
+    public function getListadoDuenios($estado='todos', $order='', $page=0) {
         $columns = 'duenio.*, COUNT(punto.id) AS puntos';        
         $join = 'LEFT JOIN punto ON duenio.id = punto.duenio_id ';
-        $conditions = 'duenio.id IS NOT NULL';     
+        $conditions = 'duenio.id IS NOT NULL';
+        if($estado!='todos') {
+            $conditions.= ($estado == self::APROBADO) ? " AND aprobado=".self::APROBADO : " AND aprobado=".self::RECHAZADO;
+        }
         
         $order = $this->get_order($order, 'razon_social', array(            
             'puntos' => array(
@@ -90,12 +94,13 @@ class Duenio extends ActiveRecord {
      * @return type
      */
     public function getInformacionDuenio($duenio) {
-        $usuario = Filter::get($duenio, 'int');
+        $duenio = Filter::get($duenio, 'int');
         if(!$duenio) {
             return NULL;
         }
-        $columnas = 'duenio.*, banco.nombre as banco';
+        $columnas = 'duenio.*, banco.nombre as banco, tipo_cuenta.tipo_cuenta';
         $join = 'INNER JOIN banco ON banco.id = duenio.banco_id ';
+        $join .= 'INNER JOIN tipo_cuenta ON tipo_cuenta.id = duenio.tipo_cuenta_id ';
         $condicion = "duenio.id = $duenio";
         return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
     } 
@@ -104,7 +109,7 @@ class Duenio extends ActiveRecord {
      * Callback que se ejecuta antes de guardar/modificar
      */
     protected function before_save() {
-        $this->tipo_cuenta = Filter::get($this->tipo_cuenta, 'string');
+        $this->tipo_cuenta_id = Filter::get($this->tipo_cuenta_id, 'int');
         $this->banco_id = Filter::get($this->banco_id, 'int');
         $this->numero_cuenta = Filter::get($this->numero_cuenta, 'int');
         //Verifico si el Dueño está disponible
