@@ -86,12 +86,27 @@ class Duenio extends ActiveRecord {
     }
 
     /**
+     * Método para obtener la información de un dueño
+     * @return type
+     */
+    public function getInformacionDuenio($duenio) {
+        $usuario = Filter::get($duenio, 'int');
+        if(!$duenio) {
+            return NULL;
+        }
+        $columnas = 'duenio.*, banco.nombre as banco';
+        $join = 'INNER JOIN banco ON banco.id = duenio.banco_id ';
+        $condicion = "duenio.id = $duenio";
+        return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
+    } 
+
+    /**
      * Callback que se ejecuta antes de guardar/modificar
      */
     protected function before_save() {
         $this->tipo_cuenta = Filter::get($this->tipo_cuenta, 'string');
-        //$this->banco_id = Filter::get($this->banco_id, 'int');
-        //$this->numero_cuenta = Filter::get($this->numero_cuenta, 'int');
+        $this->banco_id = Filter::get($this->banco_id, 'int');
+        $this->numero_cuenta = Filter::get($this->numero_cuenta, 'int');
         //Verifico si el Dueño está disponible
         if($this->_getRegisteredField('razon_social', $this->razon_social, $this->id)) {
             DwMessage::error('El nombre del Dueño ingresado ya fue registrado.');

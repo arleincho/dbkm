@@ -9,10 +9,10 @@
                     <legend>Informaci&oacute;n Personal</legend>
                     <div class='row-fluid'>
                         <div class="span4">
-                            <?php echo DwForm::text('duenio.razon_social', NULL, NULL, 'Razon Social'); ?>
+                            <?php echo DwForm::text('duenio.razon_social', NULL, $duenio->razon_social, 'Razon Social'); ?>
                         </div>
                         <div class="span4">
-                            <?php echo DwForm::text('duenio.identificacion', NULL, NULL, 'Identificacin'); ?>
+                            <?php echo DwForm::text('duenio.identificacion', NULL, $duenio->identificacion, 'Identificacin'); ?>
                         </div>
                     </div>
                 </fieldset>
@@ -21,19 +21,19 @@
                     <legend>Informaci&oacute;n Bancaria</legend>
                     <div class='row-fluid'>
                         <div class="span4">
-                            <?php echo DwForm::dbSelect('duenio.banco_id', array('nombre'), array('stti/banco', 'getListadoBancos'), array('todas'=>'Todos'), NULL, NULL, 'Banco'); ?>
+                            <?php echo DwForm::dbSelect('duenio.banco_id', array('nombre'), array('stti/banco', 'getListadoBancos'), array('todas'=>'Todos'), NULL, $duenio->banco_id, 'Banco'); ?>
                         </div>
                         <div class="span4">
-                            <?php echo DwForm::text('duenio.tipo_cuenta', NULL, NULL, 'Tipo de Cuenta'); ?>
+                            <?php echo DwForm::text('duenio.tipo_cuenta', NULL, $duenio->tipo_cuenta, 'Tipo de Cuenta'); ?>
                         </div>
                         <div class="span4">
-                            <?php echo DwForm::number('duenio.numero_cuenta', NULL, NULL, 'Numero de Cuenta del Banco'); ?>
+                            <?php echo DwForm::number('duenio.numero_cuenta', NULL, $duenio->numero_cuenta, 'Numero de Cuenta del Banco'); ?>
                         </div>
                     </div>
                 </fieldset>
                 <div class="row-fluid">
                     <div class="form-actions">
-                        <?php echo DwButton::save('Guardar Due&ntilde;o'); ?>
+                        <?php echo DwButton::save('Guardar usuario'); ?>
                         <?php echo DwButton::reset('form'); ?>
                         <?php echo DwButton::cancel('stti/duenios/listar/'); ?>
                     </div>

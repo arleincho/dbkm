@@ -10,17 +10,13 @@
 </script>
 
 <div class="container-fluid dw-shell-view">
-
     <?php View::process($page_module, $page_title, $set_title); ?>
-
     <div class="btn-toolbar btn-toolbar-top">
         <div class="btn-actions">
             <?php echo DwHtml::button("stti/duenios/agregar/", 'agregar', array('class'=>'btn-success'), 'check', APP_AJAX); ?>
         </div>
     </div>
-
     <div class="dw-overflow">
-
         <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
             <thead>
                 <tr>
@@ -58,9 +54,6 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-
     </div>
-
     <?php View::partial('paginators/default', false, array('page'=>$duenios, 'url'=>"stti/duenios/listar/$order/")); ?>
-
 </div>

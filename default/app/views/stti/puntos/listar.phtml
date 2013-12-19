@@ -1,0 +1,52 @@
+<?php View::notify(); ?>
+
+<script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            order_attr: '<?php echo (APP_AJAX) ? 'class="dw-ajax dw-spinner"' : ''; ?>',
+            order_action: $.KumbiaPHP.publicPath+"stti/puntos/listar/"
+        });
+    });
+</script>
+
+<div class="container-fluid dw-shell-view">
+    <?php View::process($page_module, $page_title, $set_title); ?>
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            <?php echo DwHtml::button("stti/puntos/agregar/", 'agregar', array('class'=>'btn-success'), 'check', APP_AJAX); ?>
+        </div>
+    </div>
+    <div class="dw-overflow">
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>NUM</th>
+                    <th class="col-collapse" data-search="perfil">PUNTO</th>
+                    <th class="col-collapse" data-search="plantilla">DUE&Ntilde;O</th>
+                    <th class="col-collapse" data-search="usuarios">TIPO DE PUNTO</th>
+                    <th class="col-collapse" data-search="estado">TRANSACCIONES</th>
+                    <th class="btn-actions no-responsive">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($puntos->items as $punto): ?>
+                    <?php $key_show = DwSecurity::getKey($punto->id, 'show_punto'); ?>
+                    <?php $key_upd = DwSecurity::getKey($punto->id, 'upd_punto'); ?>
+                    <tr>
+                        <td><?php echo $puntos->counter; ?></td>
+                        <td><?php echo $punto->punto; ?></td>
+                        <td><?php echo $punto->razon_social; ?></td>
+                        <td><?php echo $punto->tipo_punto; ?></td>
+                        <td><?php echo $punto->transacciones; ?></td>
+                        <td>
+                            <?php echo DwHtml::buttonTable('Ver Punto', "stti/puntos/ver/$key_show/", null, 'info', 'search'); ?>
+                            <?php echo DwHtml::buttonTable('Modificar Punto', "stti/puntos/editar/$key_upd/", null, 'info', 'edit'); ?>
+                        </td>
+                    </tr>
+                    <?php $puntos->counter++; ?>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php View::partial('paginators/default', false, array('page'=>$puntos, 'url'=>"stti/puntos/listar/$order/")); ?>
+</div>

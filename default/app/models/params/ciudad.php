@@ -18,7 +18,8 @@ class Ciudad extends ActiveRecord {
      * Método que se ejecuta antes de inicializar cualquier acción
      */
     public function initialize() {        
-        $this->has_many('sucursal');        
+        $this->has_many('sucursal');
+        $this->belongs_to('punto');
         $this->validates_presence_of('ciudad', 'message: Ingresa el nombre de la ciudad');        
     }
 
