@@ -146,10 +146,12 @@ class Backup extends ActiveRecord {
             return false;
         }        
         $file = $path.$obj->archivo;
-        $system = $obj->_getSystem(); 
+        $system = $obj->_getSystem();
         $database = (empty($databases)) ? Config::get('config.application.database') : $database;
         $config = $obj->_getConfig($database);        
         $exec = "$system -h ".$config['host']." -u ".$config['username']." --password=".$config['password']." --opt --default-character-set=latin1 ".$config['name']." | gzip > $file";
+        print $exec;
+        die();
         system($exec, $resultado);
         if($resultado) {
             ActiveRecord::rollbackTrans();
