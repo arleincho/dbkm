@@ -45,7 +45,7 @@ class DueniosController extends BackendController {
      */
     public function agregar() {
         if(Input::hasPost('duenio')) {
-            if(Duenio::setDuenio('create', Input::post('duenio'), array('aprobado' => Duenio::APROBADO))){
+            if(Duenio::setDuenio('create', Input::post('duenio'), array('aprobado' => Duenio::RECHAZADO))){
                 DwMessage::valid('El Dueño se ha registrado correctamente!');
                 return DwRedirect::toAction('listar');
             }          
@@ -126,7 +126,7 @@ class DueniosController extends BackendController {
                 } else {
                     $estado = ($tipo=='rechazar') ? Duenio::RECHAZADO : Duenio::APROBADO;
                     if(Duenio::setDuenio('update', $duenio->to_array(), array('id'=>$id, 'aprobado' => $estado))){
-                        ($estado==Duenio::APROBADO) ? DwMessage::valid('El Dueño del Punto se ha aprobado correctamente!') : DwMessage::valid('El Deuño del Punto se ha rechazado correctamente!');
+                        ($estado==Duenio::APROBADO) ? DwMessage::valid('El Dueño del Punto se ha aprobado correctamente!') : DwMessage::valid('El Deuño del Punto se ha dejado Pendiete por Aprobar correctamente!');
                     }
                 }
             }

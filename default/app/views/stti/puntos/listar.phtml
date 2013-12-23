@@ -39,7 +39,7 @@
                         <td><?php echo $punto->razon_social; ?></td>
                         <td><?php echo $punto->tipo_punto; ?></td>
                         <td><?php echo $punto->transacciones; ?></td>
-                        <td>$<?php echo number_format($punto->valor_transacciones, 0, ',', '.'); ?></td>
+                        <td>$<?php echo number_format(is_numeric($punto->valor_transacciones)?$punto->valor_transacciones:0, 0, ',', '.'); ?></td>
                         <td>
                             <?php echo DwHtml::buttonTable('Ver Punto', "stti/puntos/ver/$key_show/", null, 'info', 'search'); ?>
                             <?php echo DwHtml::buttonTable('Modificar Punto', "stti/puntos/editar/$key_upd/", null, 'info', 'edit'); ?>
