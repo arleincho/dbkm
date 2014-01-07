@@ -21,10 +21,12 @@
             <thead>
                 <tr>
                     <th>NUM</th>
-                    <th class="col-collapse" data-search="perfil">PUNTO</th>
-                    <th class="col-collapse" data-search="plantilla">VALOR</th>
-                    <th class="col-collapse" data-search="usuarios">ESTADO</th>
-                    <th class="btn-actions no-responsive">ACCIONES</th>
+                    <th class="col-collapse" data-search="punto">PUNTO</th>
+                    <th class="col-collapse" data-search="valor">VALOR</th>
+                    <th class="col-collapse" data-search="fecha">FECHA CREACION</th>
+                    <th class="col-collapse" data-search="fecha_modificacion">FECHA MODIFICACION</th>
+                    <th class="col-collapse" data-search="estado">ESTADO</th>
+                    <th class="btn-actions span4 no-responsive">ACCIONES</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,17 +34,31 @@
                     <?php $key_show = DwSecurity::getKey($transaccion->id, 'show_transaccion'); ?>
                     <?php $key_upd = DwSecurity::getKey($transaccion->id, 'upd_transaccion'); ?>
                     <?php $key_pagar = DwSecurity::getKey($transaccion->id, 'pagar_transaccion'); ?>
+                    <?php $key_rechazar = DwSecurity::getKey($transaccion->id, 'rechazar_transaccion'); ?>
+                    <?php $key_del = DwSecurity::getKey($transaccion->id, 'eliminar_transaccion'); ?>
                     <tr>
                         <td><?php echo $transacciones->counter; ?></td>
                         <td><?php echo $transaccion->punto; ?></td>
                         <td>$<?php echo number_format($transaccion->valor, 0, ',', '.'); ?></td>
-                        <td><?php echo ($transaccion->estado == Transacciones::PAGADA) ? '<span class="label label-success">Pagada</span>' : '<span class="label label-important">Pendiente</span>'; ; ?></td>
+                        <td><?php echo $transaccion->registrado_at; ?></td>
+                        <td><?php echo $transaccion->modificado_in; ?></td>
+                        <td>
+                            <?php if($transaccion->estado == Transacciones::PAGADA): ?>
+                                <span class="label label-success">Pagada</span>
+                            <?php elseif ($transaccion->estado == Transacciones::RECHAZADA):?>
+                                <span class="label label-important">Rechazada</span>
+                            <?php else: ?>
+                                <span class="label label-important">Pendiente</span>
+                            <?php endif; ?>
+                        </td>
                         <td>
                             <?php echo DwHtml::buttonTable('Ver Punto', "stti/transacciones/ver/$key_show/", null, 'info', 'search'); ?>
                             <?php if($transaccion->estado == Transacciones::PENDIENTE): ?>
                                 <?php echo DwHtml::buttonTable('Modificar Punto', "stti/transacciones/editar/$key_upd/", null, 'info', 'edit'); ?>
                                 <?php if(Session::get('perfil_id') == Perfil::SUPER_USUARIO || Session::get('perfil_id') == Perfil::ADMIN):?>
-                                    <?php echo DwHtml::buttonTable('Realizar Pago', "stti/transacciones/estado/pagar/$key_pagar/", null, 'success', 'flag'); ?>
+                                    <?php echo DwHtml::buttonTable('Realizar Pago', "stti/transacciones/estado/pagar/$key_pagar/", null, 'success', 'ok-sign'); ?>
+                                    <?php echo DwHtml::buttonTable('Rechazar Pago', "stti/transacciones/estado/rechazar/$key_rechazar/", null, 'success', 'thumbs-down'); ?>
+                                    <?php echo DwHtml::buttonTable('Eliminar Transaccion', "stti/transacciones/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar Transaccion', 'confirm-body'=>'Está seguro de eliminar esta Transaccion? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
                                 <?php endif;?>
                             <?php endif ?>
                         </td>

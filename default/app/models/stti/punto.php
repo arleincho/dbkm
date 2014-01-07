@@ -40,8 +40,8 @@ class Punto extends ActiveRecord {
         
         $order = $this->get_order($order, 'punto', array(            
             'tipo_punto' => array(
-                'ASC' => 'punto.tipo_punto ASC, punto.punto ASC',
-                'DESC' => 'punto.tipo_punto DESC, punto.punto DESC'
+                'ASC' => 'tipo_punto.tipo_punto ASC, punto.punto ASC',
+                'DESC' => 'tipo_punto.tipo_punto DESC, punto.punto DESC'
             ),
             'razon_social' => array(
                 'ASC' => 'duenio.razon_social ASC, punto.punto ASC',
@@ -54,6 +54,18 @@ class Punto extends ActiveRecord {
             'ciudad_id' => array(
                 'ASC' => 'punto.ciudad_id ASC, punto.punto ASC',
                 'DESC' => 'punto.ciudad_id DESC, punto.punto DESC'
+            ),
+            'fecha' => array(
+                'ASC' => 'punto.registrado_at ASC, punto.punto ASC',
+                'DESC' => 'punto.registrado_at DESC, punto.punto DESC'
+            ),
+            'transacciones' => array(
+                'ASC' => 'transacciones ASC, punto.punto ASC',
+                'DESC' => 'transacciones DESC, punto.punto DESC'
+            ),
+            'valor' => array(
+                'ASC' => 'valor_transacciones ASC, punto.punto ASC',
+                'DESC' => 'valor_transacciones DESC, punto.punto DESC'
             )
         ));
         $group = 'punto.id';

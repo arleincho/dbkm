@@ -22,7 +22,14 @@
                             <?php echo DwForm::text('transaccion.valor', array('class' => 'readonly'), '$' . number_format($transaccion->valor, 0, ',', '.'), 'Valor de la Transacción'); ?>
                         </div>
                         <div class="span4">
-                            <?php echo DwForm::text('transaccion.estado', array('class' => 'readonly'), ($transaccion->estado == Transacciones::PAGADA) ? 'PAGADA' : 'PENDIENTE', 'Estado'); ?>
+                            <?php if($transaccion->estado == Transacciones::PAGADA): ?>
+                                <?php $estado = 'Pagada'?>
+                            <?php elseif ($transaccion->estado == Transacciones::RECHAZADA):?>
+                                <?php $estado = "Rechazada";?>
+                            <?php else: ?>
+                                <?php $estado = "Pendiente";?>
+                            <?php endif; ?>
+                            <?php echo DwForm::text('transaccion.estado', array('class' => 'readonly'), $estado, 'Estado'); ?>
                         </div>
                     </div>
                 <?php echo DwForm::close(); ?>

@@ -21,11 +21,12 @@
             <thead>
                 <tr>
                     <th>NUM</th>
-                    <th class="col-collapse" data-search="perfil">PUNTO</th>
-                    <th class="col-collapse" data-search="plantilla">DUE&Ntilde;O</th>
-                    <th class="col-collapse" data-search="usuarios">TIPO DE PUNTO</th>
-                    <th class="col-collapse" data-search="estado">TRANSACCIONES</th>
-                    <th class="col-collapse" data-search="estado">VALOR TRANSACCIONES</th>
+                    <th class="col-collapse" data-search="punto">PUNTO</th>
+                    <th class="col-collapse" data-search="razon_social">DUE&Ntilde;O</th>
+                    <th class="col-collapse" data-search="tipo_punto">TIPO DE PUNTO</th>
+                    <th class="col-collapse" data-search="fecha">FECHA</th>
+                    <th class="col-collapse" data-search="transacciones">TRANSACCIONES</th>
+                    <th class="col-collapse" data-search="valor">VALOR TRANSACCIONES</th>
                     <th class="btn-actions no-responsive">ACCIONES</th>
                 </tr>
             </thead>
@@ -33,16 +34,21 @@
                 <?php foreach($puntos->items as $punto): ?>
                     <?php $key_show = DwSecurity::getKey($punto->id, 'show_punto'); ?>
                     <?php $key_upd = DwSecurity::getKey($punto->id, 'upd_punto'); ?>
+                    <?php $key_del = DwSecurity::getKey($punto->id, 'eliminar_punto'); ?>
                     <tr>
                         <td><?php echo $puntos->counter; ?></td>
                         <td><?php echo $punto->punto; ?></td>
                         <td><?php echo $punto->razon_social; ?></td>
                         <td><?php echo $punto->tipo_punto; ?></td>
+                        <td><?php echo $punto->registrado_at; ?></td>
                         <td><?php echo $punto->transacciones; ?></td>
                         <td>$<?php echo number_format(is_numeric($punto->valor_transacciones)?$punto->valor_transacciones:0, 0, ',', '.'); ?></td>
                         <td>
                             <?php echo DwHtml::buttonTable('Ver Punto', "stti/puntos/ver/$key_show/", null, 'info', 'search'); ?>
                             <?php echo DwHtml::buttonTable('Modificar Punto', "stti/puntos/editar/$key_upd/", null, 'info', 'edit'); ?>
+                            <?php if ($punto->transacciones == 0):?>
+                                <?php echo DwHtml::buttonTable('Eliminar Punto', "stti/puntos/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar Punto', 'confirm-body'=>'Está seguro de eliminar este Punto? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
+                            <?php endif?>
                         </td>
                     </tr>
                     <?php $puntos->counter++; ?>

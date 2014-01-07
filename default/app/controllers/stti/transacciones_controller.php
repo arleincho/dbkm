@@ -118,8 +118,15 @@ class TransaccionesController extends BackendController {
             } else {
                 if($tipo=='pagar' && $transaccion->estado == Transacciones::PAGADA) {
                     DwMessage::info('La transacción ya se encuentra pagada');
-                } else if($tipo!=='pagar') {
-                    DwMessage::info('No se pude realizar la accion solicitada');
+                } else if($tipo == 'rechazar') {
+                    if($transaccion->estado == Transacciones::PAGADA){
+                        DwMessage::info('La transacción ya se encuentra pagada');
+                    }else{
+                        $estado = Transacciones::RECHAZADA;
+                        if(Transacciones::setTransaccion('update', $transaccion->to_array(), array('id'=>$id, 'estado' => $estado))){
+                            DwMessage::valid('La Transacción se rechazo correctamente!');
+                        }
+                    }
                 } else {
                     $estado = Transacciones::PAGADA;
                     if(Transacciones::setTransaccion('update', $transaccion->to_array(), array('id'=>$id, 'estado' => $estado))){
@@ -129,6 +136,31 @@ class TransaccionesController extends BackendController {
             }
         }else{
             DwMessage::valid('Ocurrio un error al realizar la acción');
+        }
+        return DwRedirect::toAction('listar');
+    }
+
+    /**
+     * Método para eliminar
+     */
+    public function eliminar($key) {         
+        if(!$id = DwSecurity::isValidKey($key, 'eliminar_punto', 'int')) {
+            return DwRedirect::toAction('listar');
+        }        
+        
+        $transaccion = new Transacciones();
+        if(!$transaccion->find_first($id)) {
+            DwMessage::get('id_no_found');
+            return DwRedirect::toAction('listar');
+        }              
+        try {
+            if($transaccion->delete()) {
+                DwMessage::valid('La Transaccion se ha eliminado correctamente!');
+            } else {
+                DwMessage::warning('Lo sentimos, pero esta Transaccion no se puede eliminar.');
+            }
+        } catch(KumbiaException $e) {
+            DwMessage::error('Esta Transaccion no se puede eliminar porque se encuentra relacionado con otro registro.');
         }
         return DwRedirect::toAction('listar');
     }

@@ -24,6 +24,12 @@ class Transacciones extends ActiveRecord {
     const PENDIENTE = 2;
 
     /**
+     * Constante para definir un duenio como rechazado
+     */
+    const RECHAZADA = 3;
+
+
+    /**
      * Método contructor
      */
     public function initialize() {
@@ -51,6 +57,14 @@ class Transacciones extends ActiveRecord {
             'punto' => array(
                 'ASC' => 'punto.punto ASC',
                 'DESC' => 'punto.punto DESC'
+            ),
+            'fecha' => array(
+                'ASC' => 'transacciones.registrado_at ASC',
+                'DESC' => 'transacciones.registrado_at DESC'
+            ),
+            'fecha_modificacion' => array(
+                'ASC' => 'transacciones.modificado_in ASC',
+                'DESC' => 'transacciones.modificado_in DESC'
             )
         ));
         $group = 'transacciones.id';

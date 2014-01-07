@@ -12,7 +12,7 @@
                             <?php echo DwForm::text('duenio.razon_social', array('class' => 'input-required mask-alphanum show-error'), NULL, 'Razon Social'); ?>
                         </div>
                         <div class="span4">
-                            <?php echo DwForm::text('duenio.identificacion', array('class' => 'input-required mask-alphanum show-error'), NULL, 'Identificacin'); ?>
+                            <?php echo DwForm::text('duenio.identificacion', array('class' => 'input-required mask-alphanum show-error'), NULL, 'Identificaci&oacute;n'); ?>
                         </div>
                     </div>
                 </fieldset>
@@ -27,7 +27,7 @@
                             <?php echo DwForm::dbSelect('duenio.tipo_cuenta_id', array('tipo_cuenta'), array('stti/tipo_cuenta', 'getListadoTipoCuenta'), array(''=>'Seleccione'), array('class' => 'input-required mask-pint show-error'), NULL, 'Tipo de Cuenta'); ?>
                         </div>
                         <div class="span4">
-                            <?php echo DwForm::number('duenio.numero_cuenta', array('class' => 'input-required mask-int show-error'), NULL, 'Numero de Cuenta del Banco'); ?>
+                            <?php echo DwForm::number('duenio.numero_cuenta', array('class' => 'input-required mask-int show-error'), NULL, 'Numero de Cuenta'); ?>
                         </div>
                     </div>
                 </fieldset>

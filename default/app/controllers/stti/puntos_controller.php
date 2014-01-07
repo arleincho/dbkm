@@ -106,4 +106,29 @@ class PuntosController extends BackendController {
         $this->page_title = 'Actualizar Puntos de Atencion';
         
     }
+
+    /**
+     * Método para eliminar
+     */
+    public function eliminar($key) {         
+        if(!$id = DwSecurity::isValidKey($key, 'eliminar_punto', 'int')) {
+            return DwRedirect::toAction('listar');
+        }        
+        
+        $punto = new Punto();
+        if(!$punto->find_first($id)) {
+            DwMessage::get('id_no_found');
+            return DwRedirect::toAction('listar');
+        }              
+        try {
+            if($punto->delete()) {
+                DwMessage::valid('El Punto se ha eliminado correctamente!');
+            } else {
+                DwMessage::warning('Lo sentimos, pero este Punto no se puede eliminar.');
+            }
+        } catch(KumbiaException $e) {
+            DwMessage::error('Este Punto no se puede eliminar porque se encuentra relacionado con otro registro.');
+        }
+        return DwRedirect::toAction('listar');
+    }
 }

@@ -135,4 +135,29 @@ class DueniosController extends BackendController {
             DwMessage::valid('Ocurrio un error al realizar la acción');
         }
     }
+    
+    /**
+     * Método para eliminar
+     */
+    public function eliminar($key) {         
+        if(!$id = DwSecurity::isValidKey($key, 'eliminar_duenio', 'int')) {
+            return DwRedirect::toAction('listar');
+        }        
+        
+        $duenio = new Duenio();
+        if(!$duenio->find_first($id)) {
+            DwMessage::get('id_no_found');
+            return DwRedirect::toAction('listar');
+        }              
+        try {
+            if($duenio->delete()) {
+                DwMessage::valid('El Dueño se ha eliminado correctamente!');
+            } else {
+                DwMessage::warning('Lo sentimos, pero este Dueño no se puede eliminar.');
+            }
+        } catch(KumbiaException $e) {
+            DwMessage::error('Este Dueño no se puede eliminar porque se encuentra relacionado con otro registro.');
+        }
+        return DwRedirect::toAction('listar');
+    }
 }

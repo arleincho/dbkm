@@ -21,10 +21,10 @@
             <thead>
                 <tr>
                     <th>NUM</th>
-                    <th class="col-collapse" data-search="perfil">RAZON SOCIAL</th>
-                    <th class="col-collapse" data-search="plantilla">IDENTIFICACION</th>
-                    <th class="col-collapse" data-search="usuarios">PUNTOS</th>
-                    <th class="col-collapse" data-search="estado">APROBADO</th>
+                    <th class="col-collapse" data-search="razon_social">RAZON SOCIAL</th>
+                    <th class="col-collapse" data-search="identificacion">IDENTIFICACION</th>
+                    <th class="col-collapse" data-search="puntos">PUNTOS</th>
+                    <th class="col-collapse" data-search="aprobado">APROBADO</th>
                     <th class="btn-actions no-responsive">ACCIONES</th>
                 </tr>
             </thead>
@@ -34,6 +34,7 @@
                     <?php $key_upd = DwSecurity::getKey($duenio->id, 'upd_duenio'); ?>
                     <?php $key_inac = DwSecurity::getKey($duenio->id, 'rechazar_duenio'); ?>
                     <?php $key_reac = DwSecurity::getKey($duenio->id, 'aprobar_duenio'); ?>
+                    <?php $key_del = DwSecurity::getKey($duenio->id, 'eliminar_duenio'); ?>
                     <tr>
                         <td><?php echo $duenios->counter; ?></td>
                         <td><?php echo $duenio->razon_social; ?></td>
@@ -50,6 +51,9 @@
                                     <?php echo DwHtml::buttonTable('Aprobar Dueño', "stti/duenios/estado/aprobar/$key_reac/", null, 'danger', 'flag'); ?>
                                 <?php } ?>
                             <?php endif; ?>
+                            <?php if ($duenio->puntos == 0):?>
+                                <?php echo DwHtml::buttonTable('Eliminar Dueño', "stti/duenios/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar Dueño', 'confirm-body'=>'Está seguro de eliminar este Dueño? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
+                            <?php endif?>
                         </td>
                     </tr>
                     <?php $duenios->counter++; ?>
