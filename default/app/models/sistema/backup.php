@@ -146,16 +146,16 @@ class Backup extends ActiveRecord {
             return false;
         }        
         $file = $path.$obj->archivo;
-        $system = $obj->_getSystem(); 
+        $system = $obj->_getSystem();
         $database = (empty($databases)) ? Config::get('config.application.database') : $database;
         $config = $obj->_getConfig($database);        
-        $exec = "$system -h ".$config['host']." -u ".$config['username']." --password=".$config['password']." --opt --default-character-set=latin1 ".$config['name']." | gzip > $file";
+        $exec = "$system -h ".$config['host']." -u ".$config['username']." --password=".$config['password']."  database ".$config['name']." | gzip > $file";
         system($exec, $resultado);
         if($resultado) {
             ActiveRecord::rollbackTrans();
             DwMessage::error('Error: BKP-CRE002. Se ha producido un error al intentar crear una nueva copia de seguridad.');
             return false;            
-        }        
+        }
         $tamano = filesize($file);                
         $clase = array(" Bytes", " KB", " MB", " GB", " TB"); 
         $obj->tamano =  round($tamano/pow(1024,($i = floor(log($tamano, 1024)))), 2 ).$clase[$i];
