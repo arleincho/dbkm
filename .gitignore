@@ -1,2 +1,3 @@
 #KumbiaPHP
 default/app/temp/logs/*
+default/app/temp/cache/*
